@@ -5,7 +5,7 @@ import openpyxl
 """
     Author: coasxu
     Version: v0.1
-    Update time: 2020/6/6 16:05
+    Update time: 2020/6/7 09:27
 """
 
 def cmp(x):
@@ -14,9 +14,10 @@ def cmp(x):
 
 if __name__ == "__main__":
     # 获取当年目录下唯一的xlsx文件
-    files = os.listdir()
+    files = os.listdir('.')
     xlpath = None
     for file in files:
+        print(file)
         if file.endswith(".xlsx") and "~" not in file:
             xlpath = file
             break
@@ -57,11 +58,11 @@ if __name__ == "__main__":
     infos = {}
     usernow = None
     for para in file.paragraphs:
-        if usernow is None:
+        if usernow is None and para.text != "":
             usernow = para.text.split(":")[0]
             if usernow not in infos:
                 infos[usernow] = []
-        else:
+        elif usernow is not None:
             if para.text == "":
                 usernow = None
             else:
