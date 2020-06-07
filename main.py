@@ -1,6 +1,12 @@
 import os
-import docx
+import docx # python-docx
 import openpyxl
+
+"""
+    Author: coasxu
+    Version: v0.1
+    Update time: 2020/6/6 16:05
+"""
 
 def cmp(x):
     return x[0]
@@ -41,8 +47,9 @@ if __name__ == "__main__":
     path = None
     for file in files:
         if file.endswith(".docx") or file.endswith(".doc"):
-            path = file
-            break
+            if "~" not in file:
+                path = file
+                break
 
     print("已加载文件 '%s'" % path)
     file=docx.Document(path)
@@ -92,14 +99,21 @@ if __name__ == "__main__":
 
     print("******************成功匹配名单******************")
     print("共%d人" % len(kickcardlist))
-    print(kickcardlist)
 
+    print("学号 姓名 开工 收工")
+    for line in kickcardlist:
+        print(line[1],end=" ")
+        print(line[2],end=" ")
+        print(line[3],end=" ")
+        print(line[4],end=" ")
+        print()
     print("******************无法匹配名单******************")
-    print("【注意1】：有些同学的名字是emoji表情，在word中显示为空或奇怪的字符，需要人工查看")
-    print("【注意2】：有些同学的名字为正常的汉字或英文，但无法匹配，可能情况如下：")
-    print("1）你加过好友，给他设置了备注，在xlsx表中微信名称修改为备注即可")
-    print("2）你未加好友，他近期修改过微信名称，在xlsx表中微信名称修改为备注即可")
-    print(faillist)
+    print("复制后的名称 聊天记录")
+    for line in faillist:
+        print(line[0],end=" ")
+        print(line[1],end=" ")
+        print()
+    print()
     print("开始修改文件 '%s'" % xlpath)
     # 读取xlsx
     wb=openpyxl.load_workbook(xlpath)
@@ -115,3 +129,6 @@ if __name__ == "__main__":
 
     print("修改文件 '%s' 完成，已保存！" % xlpath)
     print("各位辛苦啦！")
+
+
+    line = input("输入任意字符退出")

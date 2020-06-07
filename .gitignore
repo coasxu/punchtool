@@ -1,6 +1,7 @@
-*.docx
-*.xlsx
-*.ipynb
+*
+!main.py
+!注意事项.txt
+!README.md
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
