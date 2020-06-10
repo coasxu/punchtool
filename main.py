@@ -40,7 +40,7 @@ if __name__ == "__main__":
         
         loseCount = int(loseCount)
         if loseCount < 3:
-            peoplelist.append([int(nid), nname, wname])
+            peoplelist.append([int(nid), nname, wname, row])
         i+=1
 
     peoplelist = sorted(peoplelist, key=cmp)
@@ -79,26 +79,26 @@ if __name__ == "__main__":
             if co.sub('', people[2]) == clear_wname and clear_wname != '':
                 peop = people.copy()
                 student_fail_indexes.remove(index)
-                peop.insert(0, index+2)
         if peop is None:
             record_faillist.append([wname, info])
         else:
             peop.extend([info])
             successlist.append(peop)
-    # successlist: [row_num, student_id, name, wexin_name, chat_records[]]
+    # successlist: [student_id, name, wexin_name, row_num, chat_records[]]
     # record_faillist: [wexin_name, chat_records[]]
     
     kickcardlist = []
     # 输出打卡记录
-    for f in successlist:
+    for line in successlist:
         shougong = 0
         kaigong = 0
-        for ff in f[4]:
+        student_id, name, wname, row_num, chat_records = line[0], line[1], line[2], line[3], line[4]
+        for ff in chat_records:
             if "开工" in ff:
                 kaigong = 1
             if "收工" in ff:
                 shougong = 1
-        kickcardlist.append([f[0], f[1],f[2], kaigong, shougong])
+        kickcardlist.append([row_num, student_id, name, kaigong, shougong])
 
     print("******************成功匹配名单******************")
     print("共%d人" % len(kickcardlist))
@@ -139,11 +139,7 @@ if __name__ == "__main__":
             ws["F%d" % row] = 1
     wb.save(filename=xlpath)
 
-
-
-
     print("修改文件 '%s' 完成，已保存！" % xlpath)
     print("各位辛苦啦！")
-
 
     line = input("输入任意字符退出")

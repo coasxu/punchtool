@@ -9,7 +9,7 @@ Punchtool 是一个面向微信群成员的工具，用于记录他们今天是�
 - [Punchtool](#punchtool)
   - [Table of Contents](#table-of-contents)
   - [Change Log](#change-log)
-    - [v0.2(2020/06/10 10:44)](#v0220200610-1044)
+    - [v0.2(2020/06/10 10:44:21)](#v0220200610-104421)
     - [v0.12(2020/06/07 23:20:25)](#v01220200607-232025)
     - [v0.11(2020/06/07 09:09:46)](#v01120200607-090946)
     - [v0.10(2020/06/06 15:28:54)](#v01020200606-152854)
@@ -26,7 +26,7 @@ Punchtool 是一个面向微信群成员的工具，用于记录他们今天是�
 
 ## Change Log
 
-### v0.2(2020/06/10 10:44)
+### v0.2(2020/06/10 10:44:21)
 - Biggg Update!:star:
 - add: automatically ignore strange emoticons(include emoji) in weixin_name, which means there will be more accurate and matching names!
 - fix: You must have two files(**【打卡】名单.xlsx, 【打卡】聊天记录.docx**), it's essential.:D
