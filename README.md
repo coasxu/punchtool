@@ -9,10 +9,11 @@ Punchtool 是一个面向微信群成员的工具，用于记录他们今天是�
 - [Punchtool](#punchtool)
   - [Table of Contents](#table-of-contents)
   - [Change Log](#change-log)
-    - [v0.1(Sun Jun 7 23:20:25 2020)](#v01sun-jun-7-232025-2020)
-    - [v0.1(Sun Jun 7 09:09:46 2020)](#v01sun-jun-7-090946-2020)
-    - [v0.1(Sat Jun 6 15:28:54 2020)](#v01sat-jun-6-152854-2020)
-    - [v0.1(Sat Jun 6 14:38:12 2020)](#v01sat-jun-6-143812-2020)
+    - [v0.2(2020/06/10 10:44)](#v0220200610-1044)
+    - [v0.12(2020/06/07 23:20:25)](#v01220200607-232025)
+    - [v0.11(2020/06/07 09:09:46)](#v01120200607-090946)
+    - [v0.10(2020/06/06 15:28:54)](#v01020200606-152854)
+    - [v0.1(2020/06/06 14:38:12)](#v0120200606-143812)
   - [Security](#security)
     - [Any optional sections](#any-optional-sections)
   - [Background](#background)
@@ -25,16 +26,22 @@ Punchtool 是一个面向微信群成员的工具，用于记录他们今天是�
 
 ## Change Log
 
-### v0.1(Sun Jun 7 23:20:25 2020)
+### v0.2(2020/06/10 10:44)
+- Biggg Update!:star:
+- add: automatically ignore strange emoticons(include emoji) in weixin_name, which means there will be more accurate and matching names!
+- fix: You must have two files(**【打卡】名单.xlsx, 【打卡】聊天记录.docx**), it's essential.:D
+- add: in **【打卡】名单.xlsx**, I add a column "未打卡次数". if a person have lacked x times, we won't count him.
+
+### v0.12(2020/06/07 23:20:25)
 - fix bug: fix the procedure of reading record of chatting.
 
-### v0.1(Sun Jun 7 09:09:46 2020)
+### v0.11(2020/06/07 09:09:46)
 - fix bug: ~word
 
-### v0.1(Sat Jun 6 15:28:54 2020)
+### v0.10(2020/06/06 15:28:54)
 - add: output to xlsx
 
-### v0.1(Sat Jun 6 14:38:12 2020)
+### v0.1(2020/06/06 14:38:12)
 - First commit
 
 ## Security

@@ -1,4 +1,5 @@
 import os
+import re
 import docx # python-docx
 import openpyxl
 
@@ -8,19 +9,17 @@ import openpyxl
     Update time: 2020/6/7 09:27
 """
 
+# add: judge whether a student has quit punch.
+# file change: 名单.xlsx add a columen "未打卡次数"
+
 def cmp(x):
     return x[0]
 
 
 if __name__ == "__main__":
     # 获取当年目录下唯一的xlsx文件
-    files = os.listdir('.')
-    xlpath = None
-    for file in files:
-        print(file)
-        if file.endswith(".xlsx") and "~" not in file:
-            xlpath = file
-            break
+    xlpath = "【打卡】名单.xlsx"
+
 
     print("已加载文件 '%s'" % xlpath)
     # 读取xlsx
@@ -31,30 +30,28 @@ if __name__ == "__main__":
     i = 0
     while True:
         row = 2+i
-        wname = ws['C%d'% row].value
         nid = ws['A%d'% row].value
         nname = ws['B%d'% row].value
+        wname = ws['C%d'% row].value
+        loseCount = ws['D%d'% row].value
     #     print(int(nid), nname, wname)
         if wname is None:
             break
-        peoplelist.append([int(nid), nname, wname])
+        
+        loseCount = int(loseCount)
+        if loseCount < 3:
+            peoplelist.append([int(nid), nname, wname])
         i+=1
 
     peoplelist = sorted(peoplelist, key=cmp)
 
-
-    # 获取当前目录下唯一的xlsx文件
-    files = os.listdir()
-    path = None
-    for file in files:
-        if file.endswith(".docx") or file.endswith(".doc"):
-            if "~" not in file:
-                path = file
-                break
+    path = "【打卡】聊天记录.docx"
 
     print("已加载文件 '%s'" % path)
     file=docx.Document(path)
 
+
+    # read chat recording file and extract username and according speaking.
     infos = {}
     usernow = None
     for para in file.paragraphs:
@@ -68,25 +65,30 @@ if __name__ == "__main__":
             else:
                 infos[usernow].append(para.text)
 
-    # 匹配姓名
+    co = re.compile(u'[\U00010000-\U0010ffff]')
+
+    # namelist and infolist matching, generate successlist
     successlist = []
-    faillist = []
-    for i,v in infos.items():
+    student_fail_indexes = list(range(len(peoplelist)))
+    record_faillist = []
+    for wname,info in infos.items():
         peop = None
         for index in range(len(peoplelist)):
             people = peoplelist[index]
-            if people[2] == i:
+            clear_wname = co.sub('', wname)
+            if co.sub('', people[2]) == clear_wname and clear_wname != '':
                 peop = people.copy()
-                peop.insert(0, index)
-            
+                student_fail_indexes.remove(index)
+                peop.insert(0, index+2)
         if peop is None:
-            faillist.append([i, v])
+            record_faillist.append([wname, info])
         else:
-            peop.extend([v])
+            peop.extend([info])
             successlist.append(peop)
-
+    # successlist: [row_num, student_id, name, wexin_name, chat_records[]]
+    # record_faillist: [wexin_name, chat_records[]]
+    
     kickcardlist = []
-
     # 输出打卡记录
     for f in successlist:
         shougong = 0
@@ -108,9 +110,18 @@ if __name__ == "__main__":
         print(line[3],end=" ")
         print(line[4],end=" ")
         print()
-    print("******************无法匹配名单******************")
+
+    print("******************没有统计到微信名称的名单*****************************")
+    print("学号 昵称 微信名称")
+    for index in student_fail_indexes:
+        print(peoplelist[index][0],end=" ")
+        print(peoplelist[index][1],end=" ")
+        print(peoplelist[index][2],end=" ")
+        print()
+
+    print("******************无法匹配的聊天记录******************")
     print("复制后的名称 聊天记录")
-    for line in faillist:
+    for line in record_faillist:
         print(line[0],end=" ")
         print(line[1],end=" ")
         print()
@@ -120,13 +131,16 @@ if __name__ == "__main__":
     wb=openpyxl.load_workbook(xlpath)
     ws=wb.worksheets[0]
     for card in kickcardlist:
-        row = card[0] + 2
+        row = card[0]
         s_id = card[1]
         if card[3] == 1:
-            ws["D%d" % row] = 1
-        if card[4] == 1:
             ws["E%d" % row] = 1
+        if card[4] == 1:
+            ws["F%d" % row] = 1
     wb.save(filename=xlpath)
+
+
+
 
     print("修改文件 '%s' 完成，已保存！" % xlpath)
     print("各位辛苦啦！")
